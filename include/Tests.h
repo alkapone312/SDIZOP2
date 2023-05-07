@@ -1,0 +1,10 @@
+void testMaxHeap();
+void testDoubleSidedList();
+void testDynamicArray();
+void testBinarySearchTree();
+void testBlackRedTree();
+void testFileGeneration(std::string testFor);
+void _generateTestFile(std::string testFor, int length);
+void _deleteTestFiles(std::string testFilesFrom);
+int getNewFileIndex(std::string testFor);
+std::string testFileName(std::string testFor, int number);

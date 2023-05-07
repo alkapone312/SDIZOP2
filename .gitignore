@@ -1,0 +1,9 @@
+bin/
+lib/
+.vscode/
+testfiles/array/*
+testfiles/bst/*
+testfiles/heap/*
+testfiles/list/*
+testfiles/rbt/*
+results
