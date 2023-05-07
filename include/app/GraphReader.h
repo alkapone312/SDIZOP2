@@ -31,5 +31,20 @@ namespace SDIZO {
          * @return ListsOfNeighbors 
          */
         ListsOfNeighbors readList();
+
+    private:
+        /**
+         * @brief Get the Graph Info object
+         * 
+         * @return GraphInfo 
+         */
+        GraphInfo getGraphInfo();
+
+        /**
+         * @brief Get the Edge Info object
+         * 
+         * @return EdgeInfo 
+         */
+        EdgeInfo getEdgeInfo();
     };
 };

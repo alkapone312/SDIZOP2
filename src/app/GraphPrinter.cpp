@@ -19,5 +19,5 @@ void GraphPrinter::printMatrix(Matrix<int> matrix) {
 }
 
 void GraphPrinter::printList(ListsOfNeighbors l) {
-
+    
 }

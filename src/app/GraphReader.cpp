@@ -12,11 +12,7 @@ Matrix<int> GraphReader::readMatrix() {
         throw new Exception("Reader not defined!");
     }
 
-    GraphInfo gi;
-    gi.edgeQuantity = reader->getData();
-    gi.vertexQuantity = reader->getData();
-    gi.startingVertex = reader->getData();
-    gi.endingVertex = reader->getData();
+    GraphInfo gi = getGraphInfo();
     Matrix<int> m = Matrix<int>::create(gi.vertexQuantity, gi.vertexQuantity, [](int row, int col) -> int {
         return INT32_MAX;
     });
@@ -25,10 +21,7 @@ Matrix<int> GraphReader::readMatrix() {
         if(!reader->isData()) {
             throw new Exception("File corrupted");
         }
-        EdgeInfo ei;
-        ei.startingVertex = reader->getData();
-        ei.endingVertex = reader->getData();
-        ei.weight = reader->getData();
+        EdgeInfo ei = getEdgeInfo();
         m.set(ei.startingVertex, ei.endingVertex, ei.weight);
         if(!directed) {
             m.set(ei.endingVertex, ei.startingVertex, ei.weight);
@@ -39,7 +32,39 @@ Matrix<int> GraphReader::readMatrix() {
 }
 
 ListsOfNeighbors GraphReader::readList() {
-    ListsOfNeighbors l;
+    GraphInfo gi = getGraphInfo();
+
+    ListsOfNeighbors l(gi.edgeQuantity);
+
+    for(int i = 0; i < gi.edgeQuantity; i++) {
+        if(!reader->isData()) {
+            throw new Exception("File corrupted");
+        }
+        EdgeInfo ei = getEdgeInfo();
+        l.addEdge(ei.startingVertex, ei.endingVertex, ei.weight);
+        if(!directed) {
+            l.addEdge(ei.endingVertex, ei.startingVertex, ei.weight);
+        }
+    }
 
     return l;
+}
+
+GraphInfo GraphReader::getGraphInfo() {
+    GraphInfo gi;
+    gi.edgeQuantity = reader->getData();
+    gi.vertexQuantity = reader->getData();
+    gi.startingVertex = reader->getData();
+    gi.endingVertex = reader->getData();
+
+    return gi;
+}
+
+EdgeInfo GraphReader::getEdgeInfo() {
+    EdgeInfo ei;
+    ei.startingVertex = reader->getData();
+    ei.endingVertex = reader->getData();
+    ei.weight = reader->getData();
+
+    return ei;
 }

@@ -254,6 +254,10 @@ namespace SDIZO {
             void last() {
                 this->actual = this->tail;
             }
+
+            DoubleSidedListNode<T>* getActual() {
+                return this->actual;
+            }
             
         private:
     
