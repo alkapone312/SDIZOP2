@@ -1,0 +1,45 @@
+#include "app/GraphReader.h"
+
+using namespace SDIZO;
+
+GraphReader::GraphReader(FileReader* r, bool directed) {
+    reader = r;
+    this->directed = directed;
+}
+
+Matrix<int> GraphReader::readMatrix() {
+    if(reader == nullptr) {
+        throw new Exception("Reader not defined!");
+    }
+
+    GraphInfo gi;
+    gi.edgeQuantity = reader->getData();
+    gi.vertexQuantity = reader->getData();
+    gi.startingVertex = reader->getData();
+    gi.endingVertex = reader->getData();
+    Matrix<int> m = Matrix<int>::create(gi.vertexQuantity, gi.vertexQuantity, [](int row, int col) -> int {
+        return INT32_MAX;
+    });
+
+    for(int i = 0; i < gi.edgeQuantity; i++) {
+        if(!reader->isData()) {
+            throw new Exception("File corrupted");
+        }
+        EdgeInfo ei;
+        ei.startingVertex = reader->getData();
+        ei.endingVertex = reader->getData();
+        ei.weight = reader->getData();
+        m.set(ei.startingVertex, ei.endingVertex, ei.weight);
+        if(!directed) {
+            m.set(ei.endingVertex, ei.startingVertex, ei.weight);
+        }
+    }
+
+    return m;
+}
+
+ListsOfNeighbors GraphReader::readList() {
+    ListsOfNeighbors l;
+
+    return l;
+}

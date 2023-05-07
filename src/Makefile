@@ -7,5 +7,5 @@ all: $(OBJECT_FILES) archive
 	$(COMPILER) -g -c $^ -I ../include
 
 archive: # creates library named SDIZO linking all objects together
-	$(ARCHIVE) rsc ../lib/libSDIZO.a $(wildcard **/*.o) $(wildcard *.o)
+	find . -type f -name "*.o" | xargs $(ARCHIVE) rsc ../lib/libSDIZO.a
 

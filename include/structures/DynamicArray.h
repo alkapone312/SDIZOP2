@@ -181,15 +181,6 @@ namespace SDIZO {
             }
 
             /**
-             * @brief Gets the actual list item
-             * 
-             * @return T
-             */
-            T getActual() {
-                return this->dynamicArray[this->actualIndex];
-            }
-
-            /**
              * @brief Sets iterator to start of an data structure
              */
             void first() {

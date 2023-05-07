@@ -24,13 +24,6 @@ namespace SDIZO {
             virtual void prev() = 0;
 
             /**
-             * @brief Gets the actual list item
-             * 
-             * @return int
-             */
-            virtual int getActual() = 0;
-
-            /**
              * @brief Sets iterator to start of an data structure
              */
             virtual void first() = 0;

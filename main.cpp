@@ -2,28 +2,20 @@
 #include "ui/ConsoleUI.h"
 #include "exception/Exception.h"
 #include "structures/Matrix.h"
+#include "structures/ListsOfNeighbors.h"
+#include "app/GraphPrinter.h"
+#include "app/GraphReader.h"
 
 using namespace std;
 using namespace SDIZO;
-
-template<typename T>
-void printMatrix(Matrix<T>& matrix) {
-    for (int i = 0; i < matrix.getRows(); ++i) {
-        for (int j = 0; j < matrix.getCols(); ++j) {
-            std::cout << matrix(i, j) << " ";
-        }
-        std::cout << std::endl;
-    }
-}
-
 
 int main (int argc, char* argv[]) {   
     UserInterface::setInstance(new ConsoleUI());
     UserInterface* ui = UserInterface::getInstance();
 
-    Matrix<int> mat = Matrix<int>::create(3, 3, [](int i, int j) -> int {
-        return 42;
-    });
+    GraphPrinter gp(ui);
+    GraphReader gr(new FileReader("test"), true);
+    gp.printMatrix(gr.readMatrix());
 
     return 0;
 } 

@@ -4,24 +4,24 @@
 namespace SDIZO {
     template <typename T>
     struct DoubleSidedListNode {
-        DoubleSidedListNode* prev = nullptr;
-        DoubleSidedListNode* next = nullptr;
+        DoubleSidedListNode<T>* prev = nullptr;
+        DoubleSidedListNode<T>* next = nullptr;
         T value;
     };
 
     template <typename T>
     class DoubleSidedList : public SDIZO::Iterable {
         private:
-            DoubleSidedListNode* head = nullptr;
-            DoubleSidedListNode* tail = nullptr;
-            DoubleSidedListNode* actual = head;
+            DoubleSidedListNode<T>* head = nullptr;
+            DoubleSidedListNode<T>* tail = nullptr;
+            DoubleSidedListNode<T>* actual = head;
             int length = 0;
         public:
             DoubleSidedList() {}
 
             ~DoubleSidedList() {
                 while(this->head) {
-                    DoubleSidedListNode* buff = this->head;
+                    DoubleSidedListNode<T>* buff = this->head;
                     this->head = this->head->next;
                     delete buff;
                 }
@@ -33,7 +33,7 @@ namespace SDIZO {
              * @param value 
              */
             void pushBack(T value) {
-                DoubleSidedListNode* newNode = new DoubleSidedListNode;
+                DoubleSidedListNode<T>* newNode = new DoubleSidedListNode<T>;
                 newNode->value = value;
                 if(this->setIfEmpty(newNode)) {
                     return;
@@ -50,7 +50,7 @@ namespace SDIZO {
              * @param value 
              */
             void pushFront(T value)  {
-                DoubleSidedListNode* newNode = new DoubleSidedListNode;
+                DoubleSidedListNode<T>* newNode = new DoubleSidedListNode<T>;
                 newNode->value = value;
                 if(this->setIfEmpty(newNode)) {
                     return;
@@ -72,7 +72,7 @@ namespace SDIZO {
                     throw new Exception((char*)"Tried to popBack() out of empty array!");
                 }
 
-                DoubleSidedListNode* oldTail = this->tail;
+                DoubleSidedListNode<T>* oldTail = this->tail;
                 this->tail = this->tail->prev;
                 this->deleteConnection(this->tail, oldTail);
                 this->length--;
@@ -96,7 +96,7 @@ namespace SDIZO {
                     throw new Exception((char*)"Tried to popFront() out of empty array!");
                 }
 
-                DoubleSidedListNode* oldHead = this->head;
+                DoubleSidedListNode<T>* oldHead = this->head;
                 this->head = this->head->next;
                 this->deleteConnection(oldHead, this->head);
                 this->length--;
@@ -118,7 +118,7 @@ namespace SDIZO {
              */
             T get(int index) {
                 this->checkIndex(index);
-                DoubleSidedListNode* actual = this->head;
+                DoubleSidedListNode<T>* actual = this->head;
                 for(int i = 0 ; i < index; i++) {
                     actual = actual->next;
                 }
@@ -135,7 +135,7 @@ namespace SDIZO {
              */
             T remove(int index) {
                 this->checkIndex(index);
-                DoubleSidedListNode* actual = this->head;
+                DoubleSidedListNode<T>* actual = this->head;
                 if(index == 0) {
                     this->head = this->head->next;
                 }
@@ -164,12 +164,12 @@ namespace SDIZO {
              */
             void add(int index, T value) {
                 this->checkIndex(index);
-                DoubleSidedListNode* newNode = new DoubleSidedListNode;
+                DoubleSidedListNode<T>* newNode = new DoubleSidedListNode<T>;
                 newNode->value = value;
                 if(this->setIfEmpty(newNode)) {
                     return;
                 }
-                DoubleSidedListNode* actual = this->head;
+                DoubleSidedListNode<T>* actual = this->head;
                 for(int i = 0 ; i < index; i++) {
                     actual = actual->next;
                 }
@@ -203,7 +203,7 @@ namespace SDIZO {
              * @return int 
              */
             int find(T value) {
-                DoubleSidedListNode* actual = this->head;
+                DoubleSidedListNode<T>* actual = this->head;
                 for(int i = 0 ; i < this->length; i++) {
                     if(actual->value == value) {
                         return i;
@@ -241,15 +241,6 @@ namespace SDIZO {
             }
 
             /**
-             * @brief Gets the actual list item
-             * 
-             * @return T
-             */
-            T getActual() {
-                return this->actual->value;
-            }
-
-            /**
              * @brief Sets iterator to start of an data structure
              */
             void first() {
@@ -272,7 +263,7 @@ namespace SDIZO {
              * @param item1 
              * @param item2 
              */
-            void deleteConnection(DoubleSidedListNode* item1, DoubleSidedListNode* item2) {
+            void deleteConnection(DoubleSidedListNode<T>* item1, DoubleSidedListNode<T>* item2) {
                 if(item1 != nullptr) {
                     item1->next = nullptr;
                 }
@@ -290,7 +281,7 @@ namespace SDIZO {
              * @return true 
              * @return false 
              */
-            bool setIfEmpty(DoubleSidedListNode* node) {
+            bool setIfEmpty(DoubleSidedListNode<T>* node) {
                 if(!this->length) {
                     this->head = node; 
                     this->tail = node;
@@ -308,7 +299,7 @@ namespace SDIZO {
              * @param node 
              * @return int 
              */
-            T getValueAndDelete(DoubleSidedListNode* node) {
+            T getValueAndDelete(DoubleSidedListNode<T>* node) {
                 T value = node->value;
                 delete node;
 
