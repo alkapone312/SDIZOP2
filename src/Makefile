@@ -1,4 +1,4 @@
-CPP_FILES := $(wildcard **/*.cpp) $(wildcard *.cpp)
+CPP_FILES := $(wildcard **/*.cpp) $(wildcard *.cpp) $(wildcard **/**/*.cpp)
 OBJECT_FILES := $(patsubst %.cpp,%.o,$(CPP_FILES))
 
 all: $(OBJECT_FILES) archive

@@ -17,23 +17,56 @@ namespace SDIZO {
             }
             edges = new DynamicArray<Vector3>;
             m.forEach([=](int row, int col, int weight) -> void {
+                if(col <= row) {
+                    return;
+                }
+
                 if(weight != INT32_MAX) {
                     Vector3 edge; edge.x = row; edge.y = col; edge.z = weight;
                     edges->pushBack(edge);
                 }
             });
-            sortEdges();
-            for(edges->first(); edges->isItem(); edges->next()) {
-                std::cout << edges->getActual().z << std::endl;
-            }
-            std::cout << std::endl;
+
+            return kruskal(m.getRows());
         }
 
         AlghorithmResult solve(ListsOfNeighbors l) {
             
         }
 
+
+        AlghorithmResult kruskal(int numberOfVertices) {
+            AlghorithmResult result;
+            result.startTime();
+            sortEdges();
+            int edgesInTree[edges->getLength()] = {};
+            int parent[numberOfVertices] = {};
+            for (int i = 0; i < numberOfVertices; i++) {
+                parent[i] = i;
+            }
+            int count = 0;
+            for (int i = 0; i < edges->getLength(); i++) {
+                int u = edges->get(i).x;
+                int v = edges->get(i).y;
+                int w = edges->get(i).z;
+                if (find(parent, u) != find(parent, v)) {
+                    result.addToResult("(" + std::to_string(u) + ", " + std::to_string(v) + ") " + std::to_string(w));
+                    parent[find(parent, u)] = find(parent, v);
+                    count++;
+                    if (count == numberOfVertices - 1) break;
+                }
+            }
+            result.stopTime();
+
+            return result;
+        }
+
     private:
+        int find(int parent[], int x) {
+            if (parent[x] == x) return x;
+            return parent[x] = find(parent, parent[x]);
+        }
+
         void sortEdges() {
             quicksort(edges, 0, edges->getLength()-1);
         }

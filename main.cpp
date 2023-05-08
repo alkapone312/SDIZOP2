@@ -20,7 +20,7 @@ int main (int argc, char* argv[]) {
     gp.printList(gr.readList());
     try {
         Kruskal* k = new Kruskal();
-        k->solve(gr.readMatrix());
+        k->solve(gr.readMatrix()).printResult();
     } catch (Exception* e) {
         ui->error(e->getMessage());
     }

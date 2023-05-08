@@ -2,8 +2,8 @@
 
 using namespace SDIZO;
 
-AlghorithmResult::AlghorithmResult(UserInterface* ui) {
-    this->ui = ui;
+AlghorithmResult::AlghorithmResult() {
+    result = new DoubleSidedList<std::string>();
 }
 
 void AlghorithmResult::addToResult(std::string s) {

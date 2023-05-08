@@ -1,4 +1,5 @@
 #pragma once
+#include "exception/Exception.h"
 #include "structures/Iterable.h"
 
 namespace SDIZO {
@@ -69,7 +70,7 @@ namespace SDIZO {
              */
             T popBack() {
                 if(!this->length) {
-                    throw new Exception((char*)"Tried to popBack() out of empty array!");
+                    throw new Exception("Tried to popBack() out of empty array!");
                 }
 
                 DoubleSidedListNode<T>* oldTail = this->tail;
@@ -93,7 +94,7 @@ namespace SDIZO {
              */
             T popFront() {
                 if(!this->length) {
-                    throw new Exception((char*)"Tried to popFront() out of empty array!");
+                    throw new Exception("Tried to popFront() out of empty array!");
                 }
 
                 DoubleSidedListNode<T>* oldHead = this->head;
@@ -318,7 +319,7 @@ namespace SDIZO {
              */
             void checkIndex(int index) {
                 if(index != 0 && index >= this->length || index < 0) {
-                    throw new Exception((char*)"Index out of bounds!"); 
+                    throw new Exception("Index out of bounds!"); 
                 }
             }
     };

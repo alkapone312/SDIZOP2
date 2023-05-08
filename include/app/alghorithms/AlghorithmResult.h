@@ -7,11 +7,11 @@
 namespace SDIZO {
     class AlghorithmResult {
     private:
-        DoubleSidedList<std::string>* result = new DoubleSidedList<std::string>();
+        DoubleSidedList<std::string>* result;
         Timer* t = new Timer();
-        UserInterface* ui;
+        UserInterface* ui = UserInterface::getInstance();
     public:
-        AlghorithmResult(UserInterface* ui);
+        AlghorithmResult();
         void addToResult(std::string);
         void printResult();
         void startTime();
