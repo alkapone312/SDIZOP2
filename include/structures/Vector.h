@@ -11,4 +11,10 @@ namespace SDIZO {
         int y;
         int z;
     };
+    
+    template <typename T, typename R>
+    struct Pair {
+        T a;
+        R b;
+    };
 }

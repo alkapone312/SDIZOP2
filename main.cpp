@@ -5,6 +5,7 @@
 #include "structures/ListsOfNeighbors.h"
 #include "app/GraphPrinter.h"
 #include "app/GraphReader.h"
+#include "app/alghorithms/Kruskal.h"
 
 using namespace std;
 using namespace SDIZO;
@@ -14,8 +15,15 @@ int main (int argc, char* argv[]) {
     UserInterface* ui = UserInterface::getInstance();
 
     GraphPrinter gp(ui);
-    GraphReader gr(new FileReader("test"), true);
+    GraphReader gr(new FileReader("test"), false);
     gp.printMatrix(gr.readMatrix());
+    gp.printList(gr.readList());
+    try {
+        Kruskal* k = new Kruskal();
+        k->solve(gr.readMatrix());
+    } catch (Exception* e) {
+        ui->error(e->getMessage());
+    }
 
     return 0;
 } 

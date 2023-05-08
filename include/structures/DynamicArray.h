@@ -195,6 +195,10 @@ namespace SDIZO {
                 this->actualIndex = this->length - 1;
             }
 
+            T getActual() {
+                return this->dynamicArray[this->actualIndex];
+            }
+
         private:
 
             /**

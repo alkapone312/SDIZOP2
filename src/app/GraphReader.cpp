@@ -12,6 +12,7 @@ Matrix<int> GraphReader::readMatrix() {
         throw new Exception("Reader not defined!");
     }
 
+    reader->reset();
     GraphInfo gi = getGraphInfo();
     Matrix<int> m = Matrix<int>::create(gi.vertexQuantity, gi.vertexQuantity, [](int row, int col) -> int {
         return INT32_MAX;
@@ -32,6 +33,11 @@ Matrix<int> GraphReader::readMatrix() {
 }
 
 ListsOfNeighbors GraphReader::readList() {
+    if(reader == nullptr) {
+        throw new Exception("Reader not defined!");
+    }
+
+    reader->reset();
     GraphInfo gi = getGraphInfo();
 
     ListsOfNeighbors l(gi.edgeQuantity);

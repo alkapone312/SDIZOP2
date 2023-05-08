@@ -11,5 +11,6 @@ namespace SDIZO {
             ~FileReader();
             virtual int getData();
             virtual bool isData();
+            virtual void reset();
     };
 }

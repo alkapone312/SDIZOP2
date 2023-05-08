@@ -65,10 +65,10 @@ namespace SDIZO {
              * 
              * @param func 
              */
-            void forEach(std::function<void(T&)> func) {
+            void forEach(std::function<void(int col, int row, T&)> func) {
                 for (int i = 0; i < rows; ++i) {
                     for (int j = 0; j < cols; ++j) {
-                        func(matrix[i][j]);
+                        func(i, j, matrix[i][j]);
                     }
                 } 
             }

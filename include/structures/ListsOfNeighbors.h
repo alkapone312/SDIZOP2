@@ -41,15 +41,13 @@ namespace SDIZO {
             return listsOfNeighbors->getLength();
         }
 
-        int getNumberOfNeighbours(int vertexIndex) {
+        int getNumberOfNeighbors(int vertexIndex) {
             checkStartVertex(vertexIndex);
 
             return listsOfNeighbors->get(vertexIndex)->getLength();
         }
 
         Vector2 getEdge(int startVertex, int index) {
-            checkEdge(startVertex, index);
-
             return listsOfNeighbors->get(startVertex)->get(index);
         } 
 

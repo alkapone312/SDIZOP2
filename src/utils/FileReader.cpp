@@ -27,3 +27,7 @@ int FileReader::getData() {
 bool FileReader::isData() {
     return !this->file.eof();
 }
+
+void FileReader::reset() {
+    this->file.seekg(0, std::ios::beg);
+}
