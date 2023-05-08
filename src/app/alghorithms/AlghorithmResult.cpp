@@ -2,17 +2,19 @@
 
 using namespace SDIZO;
 
-AlghorithmResult::AlghorithmResult() {
-    result = new DoubleSidedList<std::string>();
-}
+AlghorithmResult::AlghorithmResult() {}
 
 void AlghorithmResult::addToResult(std::string s) {
-    this->result->pushBack(s);
+    result.push_back(s);
+}
+
+void AlghorithmResult::sortStrings(bool (*compare)(std::string, std::string)) {
+    std::sort(result.begin(), result.end(), compare);
 }
 
 void AlghorithmResult::printResult() {
-    for(result->first(); result->isItem(); result->next()) {
-        ui->info(result->getActual()->value);
+    for(std::string s : result) {
+        ui->info(s);
     }
 }
 

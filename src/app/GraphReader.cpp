@@ -40,7 +40,7 @@ ListsOfNeighbors GraphReader::readList() {
     reader->reset();
     GraphInfo gi = getGraphInfo();
 
-    ListsOfNeighbors l(gi.edgeQuantity);
+    ListsOfNeighbors l(gi.vertexQuantity);
 
     for(int i = 0; i < gi.edgeQuantity; i++) {
         if(!reader->isData()) {

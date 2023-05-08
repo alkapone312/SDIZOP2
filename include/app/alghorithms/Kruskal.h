@@ -15,6 +15,8 @@ namespace SDIZO {
             if(m.getRows() != m.getCols()) {
                 throw new Exception("Unable to solve, wrong matrix");
             }
+
+            // fetch edges from matrix and solve with list of edges
             edges = new DynamicArray<Vector3>;
             m.forEach([=](int row, int col, int weight) -> void {
                 if(col <= row) {
@@ -31,27 +33,47 @@ namespace SDIZO {
         }
 
         AlghorithmResult solve(ListsOfNeighbors l) {
-            
+            // fetch edges from lists and solve with list of edges
+            for(int i = 0; i < l.getNumberOfVertices(); i++) {
+                for(int j = 0; j < l.getNumberOfNeighbors(i); j++) {
+                    Vector2 neighbor = l.getEdge(i, j);
+                    if(checkEdges(i, neighbor.x)) {
+                        Vector3 newEdge;
+                        newEdge.x = i;
+                        newEdge.y = neighbor.x;
+                        newEdge.z = neighbor.y;
+                        edges->pushBack(newEdge);
+                    }
+                }
+            }
+
+            return kruskal(l.getNumberOfVertices());
         }
 
-
+    private:
         AlghorithmResult kruskal(int numberOfVertices) {
             AlghorithmResult result;
+            result.addToResult("Edge   Weight");
             result.startTime();
+            //sort edges (quicksort)
             sortEdges();
-            int edgesInTree[edges->getLength()] = {};
-            int parent[numberOfVertices] = {};
+
+            //vertices to know which edge belongs to wich tree
+            int vertices[numberOfVertices] = {};
             for (int i = 0; i < numberOfVertices; i++) {
-                parent[i] = i;
+                vertices[i] = i;
             }
+
+            //count how many vertices are connected
             int count = 0;
             for (int i = 0; i < edges->getLength(); i++) {
                 int u = edges->get(i).x;
                 int v = edges->get(i).y;
                 int w = edges->get(i).z;
-                if (find(parent, u) != find(parent, v)) {
+                //if both not in actual tree, add edge to tree
+                if (findParent(vertices, u) != findParent(vertices, v)) {
                     result.addToResult("(" + std::to_string(u) + ", " + std::to_string(v) + ") " + std::to_string(w));
-                    parent[find(parent, u)] = find(parent, v);
+                    vertices[findParent(vertices, u)] = findParent(vertices, v);
                     count++;
                     if (count == numberOfVertices - 1) break;
                 }
@@ -61,10 +83,23 @@ namespace SDIZO {
             return result;
         }
 
-    private:
-        int find(int parent[], int x) {
-            if (parent[x] == x) return x;
-            return parent[x] = find(parent, parent[x]);
+        bool checkEdges(int a, int b) {
+            for(edges->first(); edges->isItem(); edges->next()) {
+                Vector3 e = edges->getActual();
+                if((e.x == a && e.y == b) || e.x == b && e.y == a) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        int findParent(int vertices[], int x) {
+            if (vertices[x] == x) {
+                return x;
+            }
+
+            return vertices[x] = findParent(vertices, vertices[x]);
         }
 
         void sortEdges() {
