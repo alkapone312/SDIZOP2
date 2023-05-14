@@ -20,6 +20,7 @@ namespace SDIZO {
             AlghorithmResult r;
             r.addToResult("Edge    Weight");
 
+            r.startTime();
             DoubleSidedList<int>* visited = new DoubleSidedList<int>;
             visited->pushBack(0); //start from 0 vertex
             // until tree is not complete
@@ -27,9 +28,11 @@ namespace SDIZO {
             while(count < m.getRows()) {
                 Vector3 minEdge = findMinEdge(visited, &m);
                 visited->pushBack(minEdge.y);
-                r.addToResult("(" + std::to_string(minEdge.x) + ", " + std::to_string(minEdge.y) + ") " + std::to_string(minEdge.z));
                 count++;
+                r.addToResult("(" + std::to_string(minEdge.x) + ", " + std::to_string(minEdge.y) + ") " + std::to_string(minEdge.z));
             }
+            r.stopTime();
+            delete visited;
 
             return r;
         }
@@ -38,6 +41,7 @@ namespace SDIZO {
             AlghorithmResult r;
             r.addToResult("Edge    Weight");
 
+            r.startTime();
             DoubleSidedList<int>* visited = new DoubleSidedList<int>;
             visited->pushBack(0);
 
@@ -45,9 +49,11 @@ namespace SDIZO {
             while(count < l.getNumberOfVertices()) {
                 Vector3 minEdge = findMinEdge(visited, &l);
                 visited->pushBack(minEdge.y);
-                r.addToResult("(" + std::to_string(minEdge.x) + ", " + std::to_string(minEdge.y) + ") " + std::to_string(minEdge.z));
                 count++;
+                r.addToResult("(" + std::to_string(minEdge.x) + ", " + std::to_string(minEdge.y) + ") " + std::to_string(minEdge.z));
             }   
+            r.stopTime();
+            delete visited;
 
             return r;    
         }

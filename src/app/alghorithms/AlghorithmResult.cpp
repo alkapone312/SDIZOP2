@@ -18,6 +18,10 @@ void AlghorithmResult::printResult() {
     }
 }
 
+void AlghorithmResult::printTime() {
+    ui->info("Elapsed time: " + std::to_string(getTime()));
+}
+
 void AlghorithmResult::startTime() {
     t->start();
 }

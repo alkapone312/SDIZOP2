@@ -10,6 +10,6 @@ namespace SDIZO {
     struct EdgeInfo {
         unsigned int startingVertex;
         unsigned int endingVertex;
-        unsigned int weight;
+        int weight;
     };
 }

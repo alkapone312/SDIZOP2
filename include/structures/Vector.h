@@ -16,5 +16,16 @@ namespace SDIZO {
     struct Pair {
         T a;
         R b;
+
+        Pair() {}
+        Pair(T x, R y): a(x), b(y) {}
+
+        bool operator < (Pair x) {
+            return b < x.b;
+        }
+        
+        bool operator > (Pair x) {
+            return b > x.b;
+        }
     };
 }

@@ -32,7 +32,6 @@ namespace SDIZO {
          */
         ListsOfNeighbors readList();
 
-    private:
         /**
          * @brief Get the Graph Info object
          * 
@@ -40,6 +39,7 @@ namespace SDIZO {
          */
         GraphInfo getGraphInfo();
 
+    private:
         /**
          * @brief Get the Edge Info object
          * 

@@ -12,10 +12,6 @@ namespace SDIZO {
         Kruskal() {}
 
         AlghorithmResult solve(Matrix<int> m) {
-            if(m.getRows() != m.getCols()) {
-                throw new Exception("Unable to solve, wrong matrix");
-            }
-
             // fetch edges from matrix and solve with list of edges
             edges = new DynamicArray<Vector3>;
             m.forEach([=](int row, int col, int weight) -> void {
@@ -94,6 +90,7 @@ namespace SDIZO {
             return true;
         }
 
+        // złożonśc O(logn)
         int findParent(int vertices[], int x) {
             if (vertices[x] == x) {
                 return x;

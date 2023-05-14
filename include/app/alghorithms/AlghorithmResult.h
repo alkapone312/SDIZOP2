@@ -16,6 +16,7 @@ namespace SDIZO {
         void addToResult(std::string);
         void sortStrings(bool (*compare)(std::string, std::string));
         void printResult();
+        void printTime();
         void startTime();
         void stopTime();
         int getTime();
