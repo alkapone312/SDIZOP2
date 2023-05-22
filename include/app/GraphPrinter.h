@@ -21,13 +21,13 @@ namespace SDIZO {
          * 
          * @param m 
          */
-        void printMatrix(Matrix<int> matrix);
+        void printMatrix(Matrix<int>* matrix);
 
         /**
          * @brief Print graph in form of lists of neighbors
          * 
          * @param l 
          */
-        void printList(ListsOfNeighbors l);
+        void printList(ListsOfNeighbors* l);
     };
 };

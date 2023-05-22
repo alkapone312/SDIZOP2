@@ -61,6 +61,9 @@ GraphInfo GraphReader::getGraphInfo() {
     gi.vertexQuantity = reader->getData();
     gi.startingVertex = reader->getData();
     gi.endingVertex = reader->getData();
+    if(!reader->isData()) {
+            throw new Exception("File corrupted");
+    }
 
     return gi;
 }
@@ -70,6 +73,9 @@ EdgeInfo GraphReader::getEdgeInfo() {
     ei.startingVertex = reader->getData();
     ei.endingVertex = reader->getData();
     ei.weight = reader->getData();
+    if(!reader->isData()) {
+            throw new Exception("File corrupted");
+    }
 
     return ei;
 }

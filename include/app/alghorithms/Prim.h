@@ -12,8 +12,8 @@ namespace SDIZO {
     public:
         Prim() {}
 
-        AlghorithmResult solve(Matrix<int> m) {
-            if(m.getRows() != m.getCols()) {
+        AlghorithmResult solve(Matrix<int>* m) {
+            if(m->getRows() != m->getCols()) {
                 throw new Exception("Unable to solve, wrong matrix");
             }
 
@@ -25,8 +25,8 @@ namespace SDIZO {
             visited->pushBack(0); //start from 0 vertex
             // until tree is not complete
             int count = 1;
-            while(count < m.getRows()) {
-                Vector3 minEdge = findMinEdge(visited, &m);
+            while(count < m->getRows()) {
+                Vector3 minEdge = findMinEdge(visited, m);
                 visited->pushBack(minEdge.y);
                 count++;
                 r.addToResult("(" + std::to_string(minEdge.x) + ", " + std::to_string(minEdge.y) + ") " + std::to_string(minEdge.z));
@@ -37,7 +37,7 @@ namespace SDIZO {
             return r;
         }
 
-        AlghorithmResult solve(ListsOfNeighbors l) {
+        AlghorithmResult solve(ListsOfNeighbors* l) {
             AlghorithmResult r;
             r.addToResult("Edge    Weight");
 
@@ -46,8 +46,8 @@ namespace SDIZO {
             visited->pushBack(0);
 
             int count = 1;
-            while(count < l.getNumberOfVertices()) {
-                Vector3 minEdge = findMinEdge(visited, &l);
+            while(count < l->getNumberOfVertices()) {
+                Vector3 minEdge = findMinEdge(visited, l);
                 visited->pushBack(minEdge.y);
                 count++;
                 r.addToResult("(" + std::to_string(minEdge.x) + ", " + std::to_string(minEdge.y) + ") " + std::to_string(minEdge.z));

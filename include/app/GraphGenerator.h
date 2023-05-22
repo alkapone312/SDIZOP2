@@ -10,11 +10,12 @@ namespace SDIZO {
     class GraphGenerator {
     private: 
         FileWriter* writer;    
+        bool directed;    
     public:
-        GraphGenerator(FileWriter* w): writer(w) {}
+        GraphGenerator(FileWriter* w, bool d = true): writer(w), directed(d) {}
 
         void generateGraph(int n, double density) {
-            int numberOfEdges = int(density * n * (n-1) / 2);
+            int numberOfEdges = int(density * n * (n-1));
             RandomNumberGenerator r(0, n-1);
             RandomNumberGenerator weightGenerator(0, 1000000);
             Matrix<int> m = Matrix<int>::create(n, n, [](int row, int col) -> int {
@@ -30,6 +31,9 @@ namespace SDIZO {
                     dst = r.nextInt();
                 } while (src == dst || m.get(src, dst) != INT32_MAX);
                 m.set(src, dst, weightGenerator.nextInt());
+                if(!directed) {
+                    m.set(src, dst, weightGenerator.nextInt());
+                }
             }
             // first line with graph info
             writer->write(
@@ -42,10 +46,9 @@ namespace SDIZO {
                 + to_string(r.nextInt())
                 + "\n"
             );
-
             // write each edge
-            for(int i = 0 ; i < numberOfEdges; i++) {
-                for(int j = 0 ; j < numberOfEdges; j++) { 
+            for(int i = 0 ; i < n; i++) {
+                for(int j = 0 ; j < n; j++) { 
                     int weight = m.get(i, j);
                     if(weight == INT32_MAX) {
                         continue;

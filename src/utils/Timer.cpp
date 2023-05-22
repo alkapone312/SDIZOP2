@@ -15,6 +15,6 @@ void Timer::stop() {
 }
 
 int Timer::getResult() {
-    auto int_us = std::chrono::duration_cast<std::chrono::nanoseconds>(this->stopTime - this->startTime);
+    auto int_us = std::chrono::duration_cast<std::chrono::microseconds>(this->stopTime - this->startTime);
     return int_us.count();
 }

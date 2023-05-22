@@ -18,9 +18,9 @@ namespace SDIZO {
         public:
             Dijkstra() {}
 
-            AlghorithmResult solve(Matrix<int> m, GraphInfo info) {
+            AlghorithmResult solve(Matrix<int>* m, GraphInfo info) {
                 AlghorithmResult result;
-                init(m.getRows());
+                init(m->getRows());
                 
                 for (int i = 0; i < numberOfVertices; i++)
                     distance[i] = INT32_MAX, shortestPathTree[i] = false;
@@ -37,11 +37,11 @@ namespace SDIZO {
                     for (int v = 0; v < numberOfVertices; v++) {
                         if (
                             !shortestPathTree[v] 
-                            && m.get(u, v) != INT32_MAX
+                            && m->get(u, v) != INT32_MAX
                             && distance[u] != INT32_MAX
-                            && distance[u] + m.get(u, v) < distance[v]
+                            && distance[u] + m->get(u, v) < distance[v]
                         ) {
-                            distance[v] = distance[u] + m.get(u, v);
+                            distance[v] = distance[u] + m->get(u, v);
                             prev[v] = u;
                         }
                     }
@@ -51,10 +51,10 @@ namespace SDIZO {
                 return getResult(result);
             }
 
-            AlghorithmResult solve(ListsOfNeighbors l, GraphInfo info) {
+            AlghorithmResult solve(ListsOfNeighbors* l, GraphInfo info) {
                 AlghorithmResult result;
                 BinaryHeap<Pair<int, int>> pq;
-                init(l.getNumberOfVertices());
+                init(l->getNumberOfVertices());
                 
                 Pair<int, int> p(info.startingVertex, 0);
                 pq.push(p);
@@ -68,15 +68,14 @@ namespace SDIZO {
                     shortestPathTree[u] = true;
                     pq.first();
                     while(pq.isItem() && shortestPathTree[pq.getActual().a]) {
-                        std::cout << pq.getActual().a << std::endl;
                         pq.pop();
                     }
 
-                    for (int i = 0 ; i < l.getNumberOfNeighbors(u); i++) {
+                    for (int i = 0 ; i < l->getNumberOfNeighbors(u); i++) {
                         // Get vertex label and weight of current
                         // adjacent of u.
-                        int v = l.getEdge(u, i).x;
-                        int weight = l.getEdge(u, i).y;
+                        int v = l->getEdge(u, i).x;
+                        int weight = l->getEdge(u, i).y;
             
 
                         // If there is shorted path to v through u.

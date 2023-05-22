@@ -13,9 +13,9 @@ namespace SDIZO {
         int numberOfVertices;
     public:
 
-        AlghorithmResult solve(Matrix<int> m, GraphInfo info) {
+        AlghorithmResult solve(Matrix<int>* m, GraphInfo info) {
                 AlghorithmResult result;
-                int numberOfVertices = m.getRows();
+                int numberOfVertices = m->getRows();
                 init(numberOfVertices);
                 result.startTime();
                 distance[info.startingVertex] = 0;
@@ -26,7 +26,7 @@ namespace SDIZO {
                     wasChange = false;
                     for( int u = 0 ; u < numberOfVertices; u++) {
                         for (int v = 0; v < numberOfVertices; v++) {
-                            int weight = m.get(u, v);
+                            int weight = m->get(u, v);
                             if (
                                 weight != INT32_MAX
                                 && distance[u] != INT32_MAX
@@ -46,9 +46,9 @@ namespace SDIZO {
                 return getResult(result);
         }
 
-        AlghorithmResult solve(ListsOfNeighbors l, GraphInfo info) {
+        AlghorithmResult solve(ListsOfNeighbors* l, GraphInfo info) {
             AlghorithmResult result;
-                int numberOfVertices = l.getNumberOfVertices();
+                int numberOfVertices = l->getNumberOfVertices();
                 init(numberOfVertices);
                 result.startTime();
                 distance[info.startingVertex] = 0;
@@ -59,8 +59,8 @@ namespace SDIZO {
                     wasChange = false;
                     // foreach edge
                     for(int u = 0 ; u < numberOfVertices; u++) {
-                        for(int j = 0 ; j < l.getNumberOfNeighbors(u); j++) {
-                            Vector2 edge = l.getEdge(u, j);
+                        for(int j = 0 ; j < l->getNumberOfNeighbors(u); j++) {
+                            Vector2 edge = l->getEdge(u, j);
                             int v = edge.x;
                             int weight = edge.y;
                             if (

@@ -11,10 +11,10 @@ namespace SDIZO {
     public:
         Kruskal() {}
 
-        AlghorithmResult solve(Matrix<int> m) {
+        AlghorithmResult solve(Matrix<int>* m) {
             // fetch edges from matrix and solve with list of edges
             edges = new DynamicArray<Vector3>;
-            m.forEach([=](int row, int col, int weight) -> void {
+            m->forEach([=](int row, int col, int weight) -> void {
                 if(col <= row) {
                     return;
                 }
@@ -25,14 +25,14 @@ namespace SDIZO {
                 }
             });
 
-            return kruskal(m.getRows());
+            return kruskal(m->getRows());
         }
 
-        AlghorithmResult solve(ListsOfNeighbors l) {
+        AlghorithmResult solve(ListsOfNeighbors* l) {
             // fetch edges from lists and solve with list of edges
-            for(int i = 0; i < l.getNumberOfVertices(); i++) {
-                for(int j = 0; j < l.getNumberOfNeighbors(i); j++) {
-                    Vector2 neighbor = l.getEdge(i, j);
+            for(int i = 0; i < l->getNumberOfVertices(); i++) {
+                for(int j = 0; j < l->getNumberOfNeighbors(i); j++) {
+                    Vector2 neighbor = l->getEdge(i, j);
                     if(checkEdges(i, neighbor.x)) {
                         Vector3 newEdge;
                         newEdge.x = i;
@@ -43,7 +43,7 @@ namespace SDIZO {
                 }
             }
 
-            return kruskal(l.getNumberOfVertices());
+            return kruskal(l->getNumberOfVertices());
         }
 
     private:
