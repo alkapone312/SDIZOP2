@@ -22,9 +22,12 @@ namespace SDIZO {
                 result.addToResult("Start: " + to_string(info.startingVertex));
                 result.addToResult("Edge | Weight | Path");
                 bool wasChange = false;
+                // O(V)
                 for (int i = 1; i < numberOfVertices; i++) {
                     wasChange = false;
+                    // O(V)
                     for( int u = 0 ; u < numberOfVertices; u++) {
+                        // O(V)
                         for (int v = 0; v < numberOfVertices; v++) {
                             int weight = m->get(u, v);
                             if (
@@ -55,9 +58,11 @@ namespace SDIZO {
                 result.addToResult("Start: " + to_string(info.startingVertex));
                 result.addToResult("Edge | Weight | Path");
                 bool wasChange = false;
+                // O(V)
                 for (int i = 1; i < numberOfVertices; i++) {
                     wasChange = false;
                     // foreach edge
+                    // O(V + E)
                     for(int u = 0 ; u < numberOfVertices; u++) {
                         for(int j = 0 ; j < l->getNumberOfNeighbors(u); j++) {
                             Vector2 edge = l->getEdge(u, j);

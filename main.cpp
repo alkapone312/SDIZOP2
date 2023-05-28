@@ -201,7 +201,7 @@ bool handleWithArguments(int argc, char* argv[]) {
         int numberOfVertices = stoi(argv[1]);
         double graphDensity = stod(argv[2]);
         int loops = stoi(argv[3]);
-        string file = to_string(numberOfVertices) + "-" + to_string(graphDensity) + "-" + to_string(loops);
+        string file = to_string(graphDensity) + "-" + to_string(loops);
 
         if(!system("mkdir test-results")) {
             system("mkdir test-results/kruskal");
@@ -217,7 +217,7 @@ bool handleWithArguments(int argc, char* argv[]) {
             system("mkdir test-results/bellmanford/matrix");
             system("mkdir test-results/bellmanford/list");
         }
-
+        int m[8][loops];
         for(int i = 0 ; i < loops; i++) {
             FileWriter* writer1 = new FileWriter(".test", FileWriter::Mode::CREATE);
             FileWriter* writer2 = new FileWriter(".test", FileWriter::Mode::CREATE);
@@ -231,12 +231,11 @@ bool handleWithArguments(int argc, char* argv[]) {
             undirectedGraphGenerator.generateGraph(numberOfVertices, graphDensity);
             delete writer2;
             GraphReader unDirectedGraphReader(new FileReader(".test"), false);
-
             try {
                 Matrix<int> undirectedMatrix = unDirectedGraphReader.readMatrix();
-                // Matrix<int> directedMatrix = directedGraphReader.readMatrix();
+                Matrix<int> directedMatrix = directedGraphReader.readMatrix();
                 ListsOfNeighbors undirectedList = unDirectedGraphReader.readList();
-                // ListsOfNeighbors directedList = directedGraphReader.readList();
+                ListsOfNeighbors directedList = directedGraphReader.readList();
 
                 Kruskal* k = new Kruskal();
                 AlghorithmResult r1 = k->solve(&undirectedMatrix);
@@ -246,27 +245,46 @@ bool handleWithArguments(int argc, char* argv[]) {
                 AlghorithmResult r3 = p->solve(&undirectedMatrix);
                 AlghorithmResult r4 = p->solve(&undirectedList);
 
-                // Dijkstra* d = new Dijkstra();
-                // AlghorithmResult r5 = d->solve(&directedMatrix, directedGraphReader.getGraphInfo());
-                // AlghorithmResult r6 = d->solve(&directedList, directedGraphReader.getGraphInfo());
+                Dijkstra* d = new Dijkstra();
+                AlghorithmResult r5 = d->solve(&directedMatrix, directedGraphReader.getGraphInfo());
+                AlghorithmResult r6 = d->solve(&directedList, directedGraphReader.getGraphInfo());
 
-                // BellmanFord* b = new BellmanFord();
-                // AlghorithmResult r7 = b->solve(&directedMatrix, directedGraphReader.getGraphInfo());
-                // AlghorithmResult r8 = b->solve(&directedList, directedGraphReader.getGraphInfo());
+                BellmanFord* b = new BellmanFord();
+                AlghorithmResult r7 = b->solve(&directedMatrix, directedGraphReader.getGraphInfo());
+                AlghorithmResult r8 = b->solve(&directedList, directedGraphReader.getGraphInfo());
 
-                int append = FileWriter::Mode::APPEND;
-                (FileWriter("test-results/kruskal/matrix/" + file, append)).write(to_string(r1.getTime()) + "\n");
-                (FileWriter("test-results/kruskal/list/" + file, append)).write(to_string(r2.getTime()) + "\n");
-                (FileWriter("test-results/prim/matrix/" + file, append)).write(to_string(r3.getTime()) + "\n");
-                (FileWriter("test-results/prim/list/" + file, append)).write(to_string(r4.getTime()) + "\n");
-                // (FileWriter("test-results/dijkstra/matrix/" + file, append)).write(to_string(r5.getTime()) + "\n");
-                // (FileWriter("test-results/dijkstra/list/" + file, append)).write(to_string(r6.getTime()) + "\n");
-                // (FileWriter("test-results/bellmanford/matrix/" + file, append)).write(to_string(r7.getTime()) + "\n");
-                // (FileWriter("test-results/bellmanford/list/" + file, append)).write(to_string(r8.getTime()) + "\n");
+                m[0][i] = r1.getTime();
+                m[1][i] = r2.getTime();
+                m[2][i] = r3.getTime();
+                m[3][i] = r4.getTime();
+                m[4][i] = r5.getTime();
+                m[5][i] = r6.getTime();
+                m[6][i] = r7.getTime();
+                m[7][i] = r8.getTime();
             } catch (Exception* e) {
                 ui->error(e->getMessage());
             }
         }
+        int s[8];
+        for(int i = 0 ; i < 8; i++) {
+            s[i] = 0;
+        }
+        for(int i = 0 ; i < 8; i++) {
+            for(int j = 0 ; j < loops; j++) {
+                s[i] += m[i][j];
+            }
+            s[i] /= loops;
+        }
+        int append = FileWriter::Mode::APPEND;
+        (FileWriter("test-results/kruskal/matrix/" + file, append)).write(to_string(numberOfVertices) + " " + to_string(s[0]) + "\n");
+        (FileWriter("test-results/kruskal/list/" + file, append)).write(to_string(numberOfVertices) + " " + to_string(s[1]) + "\n");
+        (FileWriter("test-results/prim/matrix/" + file, append)).write(to_string(numberOfVertices) + " " + to_string(s[2]) + "\n");
+        (FileWriter("test-results/prim/list/" + file, append)).write(to_string(numberOfVertices) + " " + to_string(s[3]) + "\n");
+        (FileWriter("test-results/dijkstra/matrix/" + file, append)).write(to_string(numberOfVertices) + " " + to_string(s[4]) + "\n");
+        (FileWriter("test-results/dijkstra/list/" + file, append)).write(to_string(numberOfVertices) + " " + to_string(s[5]) + "\n");
+        (FileWriter("test-results/bellmanford/matrix/" + file, append)).write(to_string(numberOfVertices) + " " + to_string(s[6]) + "\n");
+        (FileWriter("test-results/bellmanford/list/" + file, append)).write(to_string(numberOfVertices) + " " + to_string(s[7]) + "\n");
+
         return true;
     }
     return false;

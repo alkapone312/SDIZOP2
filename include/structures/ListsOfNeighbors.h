@@ -6,11 +6,11 @@
 namespace SDIZO {
     class ListsOfNeighbors {
     private:
-        DynamicArray<DoubleSidedList<Vector2>*>* listsOfNeighbors = new DynamicArray<DoubleSidedList<Vector2>*>();
+        DynamicArray<DynamicArray<Vector2>*>* listsOfNeighbors = new DynamicArray<DynamicArray<Vector2>*>();
     public:
         ListsOfNeighbors(int numberOfVertices) {
             for(int i = 0 ; i < numberOfVertices; i++) {
-                listsOfNeighbors->pushBack(new DoubleSidedList<Vector2>());
+                listsOfNeighbors->pushBack(new DynamicArray<Vector2>());
             }
         }
 
@@ -33,7 +33,7 @@ namespace SDIZO {
 
         void removeEdge(int startVertex, int endVertex) {
             checkEdge(startVertex, endVertex);
-            DoubleSidedList<Vector2>* tmp = listsOfNeighbors->get(startVertex);
+            DynamicArray<Vector2>* tmp = listsOfNeighbors->get(startVertex);
             tmp->remove(findEdge(tmp, endVertex));
         }
 
@@ -55,7 +55,7 @@ namespace SDIZO {
 
         void checkEdge(int startVertex, int endVertex) {
             checkStartVertex(startVertex);
-            DoubleSidedList<Vector2>* tmp = listsOfNeighbors->get(startVertex);
+            DynamicArray<Vector2>* tmp = listsOfNeighbors->get(startVertex);
             if(findEdge(tmp, endVertex) == -1) {
                 throw new Exception("Edge does not exist!");
             }
@@ -67,10 +67,10 @@ namespace SDIZO {
             }
         }
 
-        int findEdge(DoubleSidedList<Vector2>* list, int endVertex) {
+        int findEdge(DynamicArray<Vector2>* arr, int endVertex) {
             int i = 0;
-            for(list->first(); list->isItem(); list->next()) {
-                if(list->getActual()->value.x == endVertex) {
+            for(arr->first(); arr->isItem(); arr->next()) {
+                if(arr->getActual().x == endVertex) {
                     return i;
                 }
                 i++;

@@ -18,6 +18,7 @@ namespace SDIZO {
         public:
             Dijkstra() {}
 
+            // O(V^2)
             AlghorithmResult solve(Matrix<int>* m, GraphInfo info) {
                 AlghorithmResult result;
                 init(m->getRows());
@@ -29,11 +30,12 @@ namespace SDIZO {
                 result.addToResult("Start: " + to_string(info.startingVertex));
                 result.addToResult("End | Dist | Path");          
                 result.startTime();
+                // O(V)
                 for (int count = 0; count < numberOfVertices; count++) {
                     int u = minDistance();
                     shortestPathTree[u] = true;
                     string row = to_string(u) + " | " + to_string(distance[u]) + " | ";
-
+                    // O(V)
                     for (int v = 0; v < numberOfVertices; v++) {
                         if (
                             !shortestPathTree[v] 
@@ -63,6 +65,7 @@ namespace SDIZO {
                 result.addToResult("End | Dist | Path");   
             
                 result.startTime();
+                // O(V)
                 while (pq.getLength()) {
                     int u = pq.pop().a;
                     shortestPathTree[u] = true;
@@ -70,7 +73,7 @@ namespace SDIZO {
                     while(pq.isItem() && shortestPathTree[pq.getActual().a]) {
                         pq.pop();
                     }
-
+                    
                     for (int i = 0 ; i < l->getNumberOfNeighbors(u); i++) {
                         // Get vertex label and weight of current
                         // adjacent of u.
