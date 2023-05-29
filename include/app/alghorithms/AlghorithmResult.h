@@ -11,6 +11,7 @@ namespace SDIZO {
         std::vector<std::string> result = {};
         Timer* t = new Timer();
         UserInterface* ui = UserInterface::getInstance();
+        int mstSum = 0;
     public:
         AlghorithmResult();
         void addToResult(std::string);
@@ -19,6 +20,8 @@ namespace SDIZO {
         void printTime();
         void startTime();
         void stopTime();
+        int getMSTSum();
+        void addToMSTSum(int value);
         int getTime();
     };
 };

@@ -30,6 +30,7 @@ namespace SDIZO {
                 visited->pushBack(minEdge.y);
                 count++;
                 r.addToResult("(" + std::to_string(minEdge.x) + ", " + std::to_string(minEdge.y) + ") " + std::to_string(minEdge.z));
+                r.addToMSTSum(minEdge.z);
             }
             r.stopTime();
             delete visited;
@@ -51,6 +52,7 @@ namespace SDIZO {
                 visited->pushBack(minEdge.y);
                 count++;
                 r.addToResult("(" + std::to_string(minEdge.x) + ", " + std::to_string(minEdge.y) + ") " + std::to_string(minEdge.z));
+                r.addToMSTSum(minEdge.z);
             }   
             r.stopTime();
             delete visited;

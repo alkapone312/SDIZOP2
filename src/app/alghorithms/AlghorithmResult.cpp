@@ -1,6 +1,7 @@
 #include "app/alghorithms/AlghorithmResult.h"
 
 using namespace SDIZO;
+using std::to_string;
 
 AlghorithmResult::AlghorithmResult() {}
 
@@ -15,6 +16,10 @@ void AlghorithmResult::sortStrings(bool (*compare)(std::string, std::string)) {
 void AlghorithmResult::printResult() {
     for(std::string s : result) {
         ui->info(s);
+    }
+
+    if(mstSum != 0) {
+        ui->info("MST = " + to_string(mstSum));
     }
 }
 
@@ -32,4 +37,13 @@ void AlghorithmResult::stopTime() {
 
 int AlghorithmResult::getTime() {
     return t->getResult();
+}
+
+
+int AlghorithmResult::getMSTSum() {
+    return this->mstSum;    
+}
+
+void AlghorithmResult::addToMSTSum(int value) {
+    this->mstSum += value;
 }

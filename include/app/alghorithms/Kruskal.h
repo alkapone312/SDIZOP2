@@ -69,6 +69,7 @@ namespace SDIZO {
                 //if both not in actual tree, add edge to tree
                 if (findParent(vertices, u) != findParent(vertices, v)) {
                     result.addToResult("(" + std::to_string(u) + ", " + std::to_string(v) + ") " + std::to_string(w));
+                    result.addToMSTSum(w);
                     vertices[findParent(vertices, u)] = findParent(vertices, v);
                     count++;
                     if (count == numberOfVertices - 1) break;
