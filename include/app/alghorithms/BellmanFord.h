@@ -47,7 +47,7 @@ namespace SDIZO {
                         if (
                             distance[u] + weight < distance[v]
                         ) { 
-                            //result->addToResult("Negative cycle! Wrong results possible!");
+                            result->addToResult("00 Negative cycle found! Result is incorrect!");
                             break; break;
                         }
                     }
@@ -95,7 +95,7 @@ namespace SDIZO {
                         if (                         
                             distance[u] + weight < distance[v]
                         ) { 
-                            //result->addToResult("Negative cycle! Wrong results possible!");
+                            result->addToResult("00 Negative cycle found! Result is incorrect!");
                             break;break;
                         }
                     }
