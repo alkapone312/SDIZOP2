@@ -12,15 +12,15 @@ namespace SDIZO {
     public:
         Prim() {}
 
-        AlghorithmResult solve(Matrix<int>* m) {
+        AlghorithmResult* solve(Matrix<int>* m) {
             if(m->getRows() != m->getCols()) {
                 throw new Exception("Unable to solve, wrong matrix");
             }
 
-            AlghorithmResult r;
-            r.addToResult("Edge    Weight");
+            AlghorithmResult* r = new AlghorithmResult();
+            r->addToResult("Edge    Weight");
 
-            r.startTime();
+            r->startTime();
             DoubleSidedList<int>* visited = new DoubleSidedList<int>;
             visited->pushBack(0); //start from 0 vertex
             // until tree is not complete
@@ -29,20 +29,20 @@ namespace SDIZO {
                 Vector3 minEdge = findMinEdge(visited, m);
                 visited->pushBack(minEdge.y);
                 count++;
-                r.addToResult("(" + std::to_string(minEdge.x) + ", " + std::to_string(minEdge.y) + ") " + std::to_string(minEdge.z));
-                r.addToMSTSum(minEdge.z);
+                r->addToResult("(" + std::to_string(minEdge.x) + ", " + std::to_string(minEdge.y) + ") " + std::to_string(minEdge.z));
+                r->addToMSTSum(minEdge.z);
             }
-            r.stopTime();
+            r->stopTime();
             delete visited;
 
             return r;
         }
 
-        AlghorithmResult solve(ListsOfNeighbors* l) {
-            AlghorithmResult r;
-            r.addToResult("Edge    Weight");
+        AlghorithmResult* solve(ListsOfNeighbors* l) {
+            AlghorithmResult* r = new AlghorithmResult();
+            r->addToResult("Edge    Weight");
 
-            r.startTime();
+            r->startTime();
             DoubleSidedList<int>* visited = new DoubleSidedList<int>;
             visited->pushBack(0);
 
@@ -51,10 +51,10 @@ namespace SDIZO {
                 Vector3 minEdge = findMinEdge(visited, l);
                 visited->pushBack(minEdge.y);
                 count++;
-                r.addToResult("(" + std::to_string(minEdge.x) + ", " + std::to_string(minEdge.y) + ") " + std::to_string(minEdge.z));
-                r.addToMSTSum(minEdge.z);
+                r->addToResult("(" + std::to_string(minEdge.x) + ", " + std::to_string(minEdge.y) + ") " + std::to_string(minEdge.z));
+                r->addToMSTSum(minEdge.z);
             }   
-            r.stopTime();
+            r->stopTime();
             delete visited;
 
             return r;    

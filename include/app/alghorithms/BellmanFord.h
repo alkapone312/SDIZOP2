@@ -13,14 +13,14 @@ namespace SDIZO {
         int numberOfVertices;
     public:
 
-        AlghorithmResult solve(Matrix<int>* m, GraphInfo info) {
-                AlghorithmResult result;
+        AlghorithmResult* solve(Matrix<int>* m, GraphInfo info) {
+                AlghorithmResult* result = new AlghorithmResult();
                 int numberOfVertices = m->getRows();
                 init(numberOfVertices);
-                result.startTime();
+                result->startTime();
                 distance[info.startingVertex] = 0;
-                result.addToResult("Start: " + to_string(info.startingVertex));
-                result.addToResult("Edge | Weight | Path");
+                result->addToResult("Start: " + to_string(info.startingVertex));
+                result->addToResult("Edge | Weight | Path");
                 bool wasChange = false;
                 // O(V)
                 for (int i = 1; i < numberOfVertices; i++) {
@@ -44,19 +44,19 @@ namespace SDIZO {
                     if(!wasChange)
                         break;
                 }
-                result.stopTime();
+                result->stopTime();
 
                 return getResult(result);
         }
 
-        AlghorithmResult solve(ListsOfNeighbors* l, GraphInfo info) {
-            AlghorithmResult result;
+        AlghorithmResult* solve(ListsOfNeighbors* l, GraphInfo info) {
+            AlghorithmResult* result = new AlghorithmResult();
                 int numberOfVertices = l->getNumberOfVertices();
                 init(numberOfVertices);
-                result.startTime();
+                result->startTime();
                 distance[info.startingVertex] = 0;
-                result.addToResult("Start: " + to_string(info.startingVertex));
-                result.addToResult("Edge | Weight | Path");
+                result->addToResult("Start: " + to_string(info.startingVertex));
+                result->addToResult("Edge | Weight | Path");
                 bool wasChange = false;
                 // O(V)
                 for (int i = 1; i < numberOfVertices; i++) {
@@ -82,7 +82,7 @@ namespace SDIZO {
                     if(!wasChange)
                         break;
                 }
-                result.stopTime();
+                result->stopTime();
 
                 return getResult(result);
         }
@@ -98,7 +98,7 @@ namespace SDIZO {
             }
         }
 
-        AlghorithmResult getResult(AlghorithmResult &result) {
+        AlghorithmResult* getResult(AlghorithmResult* result) {
             for(int i = 0 ; i < numberOfVertices; i++) {
                 std::string path = to_string(i);
                 int j = i;
@@ -107,7 +107,7 @@ namespace SDIZO {
                     j = prev[j];
                 }
 
-                result.addToResult(to_string(i) + " | " + to_string(distance[i]) + " | " + path);
+                result->addToResult(to_string(i) + " | " + to_string(distance[i]) + " | " + path);
             }
         
             return result;

@@ -19,17 +19,17 @@ namespace SDIZO {
             Dijkstra() {}
 
             // O(V^2)
-            AlghorithmResult solve(Matrix<int>* m, GraphInfo info) {
-                AlghorithmResult result;
+            AlghorithmResult* solve(Matrix<int>* m, GraphInfo info) {
+                AlghorithmResult* result = new AlghorithmResult();
                 init(m->getRows());
                 
                 for (int i = 0; i < numberOfVertices; i++)
                     distance[i] = INT32_MAX, shortestPathTree[i] = false;
             
                 distance[info.startingVertex] = 0;
-                result.addToResult("Start: " + to_string(info.startingVertex));
-                result.addToResult("End | Dist | Path");          
-                result.startTime();
+                result->addToResult("Start: " + to_string(info.startingVertex));
+                result->addToResult("End | Dist | Path");          
+                result->startTime();
                 // O(V)
                 for (int count = 0; count < numberOfVertices; count++) {
                     int u = minDistance();
@@ -48,23 +48,23 @@ namespace SDIZO {
                         }
                     }
                 }
-                result.stopTime();
+                result->stopTime();
 
                 return getResult(result);
             }
 
-            AlghorithmResult solve(ListsOfNeighbors* l, GraphInfo info) {
-                AlghorithmResult result;
+            AlghorithmResult* solve(ListsOfNeighbors* l, GraphInfo info) {
+                AlghorithmResult* result = new AlghorithmResult();
                 BinaryHeap<Pair<int, int>> pq;
                 init(l->getNumberOfVertices());
                 
                 Pair<int, int> p(info.startingVertex, 0);
                 pq.push(p);
                 distance[info.startingVertex] = 0;
-                result.addToResult("Start: " + to_string(info.startingVertex));
-                result.addToResult("End | Dist | Path");   
+                result->addToResult("Start: " + to_string(info.startingVertex));
+                result->addToResult("End | Dist | Path");   
             
-                result.startTime();
+                result->startTime();
                 // O(V)
                 while (pq.getLength()) {
                     int u = pq.pop().a;
@@ -91,7 +91,7 @@ namespace SDIZO {
                         }
                     }   
                 }
-                result.stopTime();
+                result->stopTime();
 
                 return getResult(result);
             }
@@ -119,7 +119,7 @@ namespace SDIZO {
                 return min_index;
             }
 
-            AlghorithmResult getResult(AlghorithmResult &result) {
+            AlghorithmResult* getResult(AlghorithmResult* result) {
                 for(int i = 0 ; i < numberOfVertices; i++) {
                     std::string path = to_string(i);
                     int j = i;
@@ -128,7 +128,7 @@ namespace SDIZO {
                         j = prev[j];
                     }
 
-                    result.addToResult(to_string(i) + " | " + to_string(distance[i]) + " | " + path);
+                    result->addToResult(to_string(i) + " | " + to_string(distance[i]) + " | " + path);
                 }
             
                 return result;

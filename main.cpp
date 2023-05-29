@@ -90,8 +90,8 @@ void MST() {
     string filename = ui->getString();
     Matrix<int> m = readMatrix(filename, false);
     ListsOfNeighbors l = readList(filename, false);
-    AlghorithmResult r1;
-    AlghorithmResult r2;
+    AlghorithmResult* r1;
+    AlghorithmResult* r2;
     while(!exit) {
         ui->menu(options);
         switch(ui->getNumber()) {
@@ -104,28 +104,30 @@ void MST() {
             case 3:
                 ui->info("Result for matrix:");
                 r1 = Kruskal().solve(&m);
-                r1.sortStrings(compare);
-                r1.printResult();
+                r1->sortStrings(compare);
+                r1->printResult();
                 ui->info("Result for list:");
                 r2 = Kruskal().solve(&l);
-                r2.sortStrings(compare);
-                r2.printResult();
+                r2->sortStrings(compare);
+                r2->printResult();
             break;
             case 4:
                 ui->info("Result for matrix:");
                 r1 = Prim().solve(&m);
-                r1.sortStrings(compare);
-                r1.printResult();
+                r1->sortStrings(compare);
+                r1->printResult();
                 ui->info("Result for list:");
                 r2 = Prim().solve(&l);
-                r2.sortStrings(compare);
-                r2.printResult();
+                r2->sortStrings(compare);
+                r2->printResult();
             break;
             case 5:
             exit = true;
             break;
         }
     }
+    delete r1;
+    delete r2;
 }
 
 void SP() {
@@ -144,8 +146,8 @@ void SP() {
     Matrix<int> m = readMatrix(filename, true);
     ListsOfNeighbors l = readList(filename, true);
     GraphInfo g = readInfo(filename);
-    AlghorithmResult r1;
-    AlghorithmResult r2;
+    AlghorithmResult* r1;
+    AlghorithmResult* r2;
     while(!exit) {
         ui->menu(options);
         switch(ui->getNumber()) {
@@ -158,28 +160,30 @@ void SP() {
             case 3:
                 ui->info("Result for matrix:");
                 r1 = Dijkstra().solve(&m, g);
-                r1.sortStrings(compare);
-                r1.printResult();
+                r1->sortStrings(compare);
+                r1->printResult();
                 ui->info("Result for list:");
                 r2 = Dijkstra().solve(&l, g);
-                r2.sortStrings(compare);
-                r2.printResult();
+                r2->sortStrings(compare);
+                r2->printResult();
             break;
             case 4:
                 ui->info("Result for matrix:");
                 r1 = BellmanFord().solve(&m, g);
-                r1.sortStrings(compare);
-                r1.printResult();
+                r1->sortStrings(compare);
+                r1->printResult();
                 ui->info("Result for list:");
                 r2 = BellmanFord().solve(&l, g);
-                r2.sortStrings(compare);
-                r2.printResult();
+                r2->sortStrings(compare);
+                r2->printResult();
             break;
             case 5:
             exit = true;
             break;
         }
     }
+    delete r1;
+    delete r2;
 }
 
 Matrix<int> readMatrix(string filename, bool directed) {
@@ -238,29 +242,38 @@ bool handleWithArguments(int argc, char* argv[]) {
                 ListsOfNeighbors directedList = directedGraphReader.readList();
 
                 Kruskal* k = new Kruskal();
-                AlghorithmResult r1 = k->solve(&undirectedMatrix);
-                AlghorithmResult r2 = k->solve(&undirectedList);
+                AlghorithmResult* r1 = k->solve(&undirectedMatrix);
+                AlghorithmResult* r2 = k->solve(&undirectedList);
 
                 Prim* p = new Prim();
-                AlghorithmResult r3 = p->solve(&undirectedMatrix);
-                AlghorithmResult r4 = p->solve(&undirectedList);
+                AlghorithmResult* r3 = p->solve(&undirectedMatrix);
+                AlghorithmResult* r4 = p->solve(&undirectedList);
 
                 Dijkstra* d = new Dijkstra();
-                AlghorithmResult r5 = d->solve(&directedMatrix, directedGraphReader.getGraphInfo());
-                AlghorithmResult r6 = d->solve(&directedList, directedGraphReader.getGraphInfo());
+                AlghorithmResult* r5 = d->solve(&directedMatrix, directedGraphReader.getGraphInfo());
+                AlghorithmResult* r6 = d->solve(&directedList, directedGraphReader.getGraphInfo());
 
                 BellmanFord* b = new BellmanFord();
-                AlghorithmResult r7 = b->solve(&directedMatrix, directedGraphReader.getGraphInfo());
-                AlghorithmResult r8 = b->solve(&directedList, directedGraphReader.getGraphInfo());
+                AlghorithmResult* r7 = b->solve(&directedMatrix, directedGraphReader.getGraphInfo());
+                AlghorithmResult* r8 = b->solve(&directedList, directedGraphReader.getGraphInfo());
 
-                m[0][i] = r1.getTime();
-                m[1][i] = r2.getTime();
-                m[2][i] = r3.getTime();
-                m[3][i] = r4.getTime();
-                m[4][i] = r5.getTime();
-                m[5][i] = r6.getTime();
-                m[6][i] = r7.getTime();
-                m[7][i] = r8.getTime();
+                m[0][i] = r1->getTime();
+                m[1][i] = r2->getTime();
+                m[2][i] = r3->getTime();
+                m[3][i] = r4->getTime();
+                m[4][i] = r5->getTime();
+                m[5][i] = r6->getTime();
+                m[6][i] = r7->getTime();
+                m[7][i] = r8->getTime();
+
+                delete r1;
+                delete r2;
+                delete r3;
+                delete r4;
+                delete r5;
+                delete r6;
+                delete r7;
+                delete r8;
             } catch (Exception* e) {
                 ui->error(e->getMessage());
             }

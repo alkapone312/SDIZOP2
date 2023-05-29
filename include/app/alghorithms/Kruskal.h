@@ -11,7 +11,7 @@ namespace SDIZO {
     public:
         Kruskal() {}
 
-        AlghorithmResult solve(Matrix<int>* m) {
+        AlghorithmResult* solve(Matrix<int>* m) {
             // fetch edges from matrix and solve with list of edges
             edges = new DynamicArray<Vector3>;
             m->forEach([=](int row, int col, int weight) -> void {
@@ -28,8 +28,9 @@ namespace SDIZO {
             return kruskal(m->getRows());
         }
 
-        AlghorithmResult solve(ListsOfNeighbors* l) {
+        AlghorithmResult* solve(ListsOfNeighbors* l) {
             // fetch edges from lists and solve with list of edges
+            edges = new DynamicArray<Vector3>;
             for(int i = 0; i < l->getNumberOfVertices(); i++) {
                 for(int j = 0; j < l->getNumberOfNeighbors(i); j++) {
                     Vector2 neighbor = l->getEdge(i, j);
@@ -47,10 +48,10 @@ namespace SDIZO {
         }
 
     private:
-        AlghorithmResult kruskal(int numberOfVertices) {
-            AlghorithmResult result;
-            result.addToResult("Edge   Weight");
-            result.startTime();
+        AlghorithmResult* kruskal(int numberOfVertices) {
+            AlghorithmResult* result = new AlghorithmResult();
+            result->addToResult("Edge   Weight");
+            result->startTime();
             //sort edges (quicksort)
             sortEdges();
 
@@ -68,14 +69,14 @@ namespace SDIZO {
                 int w = edges->get(i).z;
                 //if both not in actual tree, add edge to tree
                 if (findParent(vertices, u) != findParent(vertices, v)) {
-                    result.addToResult("(" + std::to_string(u) + ", " + std::to_string(v) + ") " + std::to_string(w));
-                    result.addToMSTSum(w);
+                    result->addToResult("(" + std::to_string(u) + ", " + std::to_string(v) + ") " + std::to_string(w));
+                    result->addToMSTSum(w);
                     vertices[findParent(vertices, u)] = findParent(vertices, v);
                     count++;
                     if (count == numberOfVertices - 1) break;
                 }
             }
-            result.stopTime();
+            result->stopTime();
 
             return result;
         }
