@@ -22,8 +22,10 @@ namespace SDIZO {
                 result->startTime();
                 distance[info.startingVertex] = 0;
                 // O(V)
+                bool wasChange;
                 for (int i = 1; i < numberOfVertices; i++) {
                     // O(V)
+                    wasChange = false;
                     for( int u = 0 ; u < numberOfVertices; u++) {
                         // O(V)
                         for (int v = 0; v < numberOfVertices; v++) {
@@ -35,8 +37,12 @@ namespace SDIZO {
                             ) {
                                 prev[v] = u;
                                 distance[v] = distance[u] + weight;
+                                wasChange = true;
                             }
                         }
+                    }
+                    if(!wasChange) {
+                        break;
                     }
                 }
                 result->stopTime();
@@ -45,9 +51,11 @@ namespace SDIZO {
                     for (int v = 0; v < numberOfVertices; v++) {
                         int weight = m->get(u, v);
                         if (
+                            weight      != INT32_MAX &&
+                            distance[v] != INT32_MAX &&
                             distance[u] + weight < distance[v]
                         ) { 
-                            result->addToResult("00 Negative cycle found! Result is incorrect!");
+                            result->markNegativeCycle();
                             break; break;
                         }
                     }
@@ -64,10 +72,10 @@ namespace SDIZO {
                 distance[info.startingVertex] = 0;
                 result->addToResult("Start: " + to_string(info.startingVertex));
                 result->addToResult("Edge | Weight | Path");
-                // O(V)
+                bool wasChange;
                 for (int i = 1; i < numberOfVertices; i++) {
                     // foreach edge
-                    // O(V + E)
+                    wasChange = false;
                     for(int u = 0 ; u < numberOfVertices; u++) {
                         for(int j = 0 ; j < l->getNumberOfNeighbors(u); j++) {
                             Vector2 edge = l->getEdge(u, j);
@@ -80,8 +88,12 @@ namespace SDIZO {
                             ) { 
                                 prev[v] = u;
                                 distance[v] = distance[u] + weight; 
+                                wasChange = true;
                             }
                         }
+                    }
+                    if(!wasChange) {
+                        break;
                     }
                 }
 
@@ -93,9 +105,11 @@ namespace SDIZO {
                         int v = edge.x;
                         int weight = edge.y;
                         if (                         
+                            weight      != INT32_MAX &&
+                            distance[v] != INT32_MAX &&
                             distance[u] + weight < distance[v]
                         ) { 
-                            result->addToResult("00 Negative cycle found! Result is incorrect!");
+                            result->markNegativeCycle();
                             break;break;
                         }
                     }

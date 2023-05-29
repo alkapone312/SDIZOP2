@@ -12,6 +12,7 @@ namespace SDIZO {
         Timer* t = new Timer();
         UserInterface* ui = UserInterface::getInstance();
         int mstSum = 0;
+        bool negativeCycle = false;
     public:
         AlghorithmResult();
         void addToResult(std::string);
@@ -22,6 +23,7 @@ namespace SDIZO {
         void stopTime();
         int getMSTSum();
         void addToMSTSum(int value);
+        void markNegativeCycle();
         int getTime();
     };
 };

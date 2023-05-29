@@ -21,6 +21,10 @@ void AlghorithmResult::printResult() {
     if(mstSum != 0) {
         ui->info("MST = " + to_string(mstSum));
     }
+
+    if(negativeCycle) {
+        ui->info("Found negative cycle! Results may be incorrect.");
+    }
 }
 
 void AlghorithmResult::printTime() {
@@ -46,4 +50,8 @@ int AlghorithmResult::getMSTSum() {
 
 void AlghorithmResult::addToMSTSum(int value) {
     this->mstSum += value;
+}
+
+void AlghorithmResult::markNegativeCycle() {
+    this->negativeCycle = true;
 }
