@@ -16,8 +16,8 @@ namespace SDIZO {
 
         void generateGraph(int n, double density) {
             int numberOfEdges = int(density * n * (n-1));
-            RandomNumberGenerator r(0, n-1);
-            RandomNumberGenerator weightGenerator(0, 1000000);
+            RandomNumberGenerator r(0, n-1); 
+            RandomNumberGenerator weightGenerator(0, 10000000);
             Matrix<int> m = Matrix<int>::create(n, n, [](int row, int col) -> int {
                 return INT32_MAX;
             });
