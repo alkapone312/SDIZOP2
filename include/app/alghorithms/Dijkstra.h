@@ -37,13 +37,17 @@ namespace SDIZO {
                     string row = to_string(u) + " | " + to_string(distance[u]) + " | ";
                     // O(V)
                     for (int v = 0; v < numberOfVertices; v++) {
+                        int weight = m->get(u, v);
                         if (
                             !shortestPathTree[v] 
-                            && m->get(u, v) != INT32_MAX
+                            && weight != INT32_MAX
                             && distance[u] != INT32_MAX
-                            && distance[u] + m->get(u, v) < distance[v]
+                            && distance[u] + weight < distance[v]
                         ) {
-                            distance[v] = distance[u] + m->get(u, v);
+                            if(weight < 0) {
+                                throw new Exception("This alghorithm is not meant to run for graphs with negative edge weights!");
+                            }
+                            distance[v] = distance[u] + weight;
                             prev[v] = u;
                         }
                     }
@@ -79,8 +83,11 @@ namespace SDIZO {
                         // adjacent of u.
                         int v = l->getEdge(u, i).x;
                         int weight = l->getEdge(u, i).y;
-            
 
+                        if(weight < 0) {
+                            throw new Exception("This alghorithm is not meant to run for graphs with negative edges weights!");
+                        }
+            
                         // If there is shorted path to v through u.
                         if (distance[v] > distance[u] + weight) {
                             // Updating distance of v
