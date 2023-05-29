@@ -2,12 +2,13 @@
 
 #include <functional>
 #include "exception/Exception.h"
+#include "structures/DynamicArray.h"
 
 namespace SDIZO {
     template <typename T>
     class Matrix {
         private:
-            T **matrix;
+            DynamicArray<DynamicArray<int>*>* matrix;
             int rows;
             int cols;
 
@@ -19,9 +20,13 @@ namespace SDIZO {
              * @param c 
              */
             Matrix(int r, int c): rows(r), cols(c) {
-                matrix = new T*[rows];
+                matrix = new DynamicArray<DynamicArray<int>*>();
                 for(int i = 0; i < rows; i++) {
-                    matrix[i] = new T[cols];
+                    DynamicArray<int>* row = new DynamicArray<int>;
+                    for(int j = 0 ; j < cols; j++) {
+                        row->pushBack(0);
+                    }
+                    matrix->pushBack(row);
                 }
             }
             
@@ -30,10 +35,7 @@ namespace SDIZO {
              * 
              */
             ~Matrix() {
-                for(int i = 0; i < rows; i++) {
-                    delete[] matrix[i];
-                }
-                delete[] matrix;
+                delete matrix;
             }
 
             /**
@@ -45,7 +47,7 @@ namespace SDIZO {
              */
             void set(int row, int col, T value) {
                 checkIndex(row, col);
-                matrix[row][col] = value;
+                matrix->get(row)->set(col, value);
             }
 
             /**
@@ -55,9 +57,9 @@ namespace SDIZO {
              * @param col 
              * @return & T 
              */
-            T& get(int row, int col) {
+            T get(int row, int col) {
                 checkIndex(row, col);
-                return matrix[row][col];
+                return matrix->get(row)->get(col);
             }
 
             /**
@@ -65,10 +67,10 @@ namespace SDIZO {
              * 
              * @param func 
              */
-            void forEach(std::function<void(int col, int row, T&)> func) {
+            void forEach(std::function<void(int col, int row, T)> func) {
                 for (int i = 0; i < rows; ++i) {
                     for (int j = 0; j < cols; ++j) {
-                        func(i, j, matrix[i][j]);
+                        func(i, j, matrix->get(i)->get(j));
                     }
                 } 
             }
@@ -83,7 +85,7 @@ namespace SDIZO {
                 Matrix<T> result(rows, cols);
                 for (int i = 0; i < rows; ++i) {
                     for (int j = 0; j < cols; ++j) {
-                        result(i, j) = func(matrix[i][j]);
+                        result->set(i, j, func(matrix->get(i)->get(j)));
                     }
                 }
 
@@ -104,7 +106,7 @@ namespace SDIZO {
 
                 for (int i = 0; i < rows; i++) {
                     for (int j = 0; j < cols; j++) {
-                        matrix(i, j) = createFunc(i, j);
+                        matrix.set(i, j, createFunc(i, j));
                     }
                 }
 
@@ -117,7 +119,7 @@ namespace SDIZO {
              * @return int 
              */
             int getRows() {
-                return rows;
+                return matrix->getLength();
             }
 
             /**
@@ -126,19 +128,7 @@ namespace SDIZO {
              * @return int 
              */
             int getCols() {
-                return cols;
-            }
-
-            /**
-             * @brief 
-             * 
-             * @param i 
-             * @param j 
-             * @return T& 
-             */
-            T& operator()(int i, int j) {
-                checkIndex(i, j);
-                return matrix[i][j];
+                return matrix->get(0)->getLength();
             }
 
         private:
