@@ -17,14 +17,12 @@ namespace SDIZO {
                 AlghorithmResult* result = new AlghorithmResult();
                 int numberOfVertices = m->getRows();
                 init(numberOfVertices);
-                result->startTime();
-                distance[info.startingVertex] = 0;
                 result->addToResult("Start: " + to_string(info.startingVertex));
                 result->addToResult("Edge | Weight | Path");
-                bool wasChange = false;
+                result->startTime();
+                distance[info.startingVertex] = 0;
                 // O(V)
                 for (int i = 1; i < numberOfVertices; i++) {
-                    wasChange = false;
                     // O(V)
                     for( int u = 0 ; u < numberOfVertices; u++) {
                         // O(V)
@@ -34,17 +32,26 @@ namespace SDIZO {
                                 weight != INT32_MAX
                                 && distance[u] != INT32_MAX
                                 && distance[u] + weight < distance[v]
-                            ) { 
+                            ) {
                                 prev[v] = u;
-                                distance[v] = distance[u] + weight; 
-                                wasChange = true;
+                                distance[v] = distance[u] + weight;
                             }
                         }
                     }
-                    if(!wasChange)
-                        break;
                 }
                 result->stopTime();
+
+                for(int u = 0 ; u < numberOfVertices; u++) {
+                    for (int v = 0; v < numberOfVertices; v++) {
+                        int weight = m->get(u, v);
+                        if (
+                            distance[u] + weight < distance[v]
+                        ) { 
+                            //result->addToResult("Negative cycle! Wrong results possible!");
+                            break; break;
+                        }
+                    }
+                }
 
                 return getResult(result);
         }
@@ -57,10 +64,8 @@ namespace SDIZO {
                 distance[info.startingVertex] = 0;
                 result->addToResult("Start: " + to_string(info.startingVertex));
                 result->addToResult("Edge | Weight | Path");
-                bool wasChange = false;
                 // O(V)
                 for (int i = 1; i < numberOfVertices; i++) {
-                    wasChange = false;
                     // foreach edge
                     // O(V + E)
                     for(int u = 0 ; u < numberOfVertices; u++) {
@@ -75,14 +80,26 @@ namespace SDIZO {
                             ) { 
                                 prev[v] = u;
                                 distance[v] = distance[u] + weight; 
-                                wasChange = true;
                             }
                         }
                     }
-                    if(!wasChange)
-                        break;
                 }
+
                 result->stopTime();
+
+                for(int u = 0 ; u < numberOfVertices; u++) {
+                    for(int j = 0 ; j < l->getNumberOfNeighbors(u); j++) {
+                        Vector2 edge = l->getEdge(u, j);
+                        int v = edge.x;
+                        int weight = edge.y;
+                        if (                         
+                            distance[u] + weight < distance[v]
+                        ) { 
+                            //result->addToResult("Negative cycle! Wrong results possible!");
+                            break;break;
+                        }
+                    }
+                }
 
                 return getResult(result);
         }
@@ -102,9 +119,15 @@ namespace SDIZO {
             for(int i = 0 ; i < numberOfVertices; i++) {
                 std::string path = to_string(i);
                 int j = i;
+                int negativeCycleDetect = 0;
                 while(prev[j] != j) {
                     path = to_string(prev[j]) + " " + path;
                     j = prev[j];
+                    negativeCycleDetect++;
+                    if(negativeCycleDetect >= numberOfVertices) {
+                        break;
+                        continue;
+                    }
                 }
 
                 result->addToResult(to_string(i) + " | " + to_string(distance[i]) + " | " + path);
