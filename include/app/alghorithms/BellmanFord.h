@@ -37,7 +37,9 @@ namespace SDIZO {
                                 && distance[u] != INT32_MAX
                                 && distance[u] + weight < distance[v]
                             ) {
-                                prev[v] = u;
+                                if(v != info.startingVertex) {
+                                    prev[v] = u;
+                                }
                                 distance[v] = distance[u] + weight;
                                 wasChange = true;
                             }
@@ -88,7 +90,9 @@ namespace SDIZO {
                                 && distance[u] != INT32_MAX
                                 && distance[u] + weight < distance[v]
                             ) { 
-                                prev[v] = u;
+                                if(v != info.startingVertex) {
+                                    prev[v] = u;
+                                }
                                 distance[v] = distance[u] + weight; 
                                 wasChange = true;
                             }
@@ -143,9 +147,6 @@ namespace SDIZO {
                     if(negativeCycleDetect >= numberOfVertices) {
                         break;
                         continue;
-                    }
-                    if(j == startingVertex) {
-                        break;
                     }
                 }
 
