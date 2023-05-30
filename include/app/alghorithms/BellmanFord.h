@@ -11,11 +11,13 @@ namespace SDIZO {
         int* distance;
         int* prev;
         int numberOfVertices;
+        int startingVertex;
     public:
 
         AlghorithmResult* solve(Matrix<int>* m, GraphInfo info) {
                 AlghorithmResult* result = new AlghorithmResult();
                 int numberOfVertices = m->getRows();
+                startingVertex = info.startingVertex;
                 init(numberOfVertices);
                 result->addToResult("Start: " + to_string(info.startingVertex));
                 result->addToResult("Edge | Weight | Path");
@@ -141,6 +143,9 @@ namespace SDIZO {
                     if(negativeCycleDetect >= numberOfVertices) {
                         break;
                         continue;
+                    }
+                    if(j == startingVertex) {
+                        break;
                     }
                 }
 
